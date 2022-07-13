@@ -1,0 +1,68 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Информация о сотрудниках на Гомельском отделении</title>
+    <link rel="shortcut icon" th:href="@{/images/rw.png}" type="image/svg">
+    <link rel="stylesheet" th:href="@{/style.css}"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+</head>
+<body>
+<div th:replace="header :: content"></div>
+<div class="main" name="top">
+    <div th:replace="birthday :: content"></div>
+    <div class="centrColumn" style="padding-top:20px; ">
+        <div style="text-align: left; color:#27458A; font-size:16px">
+            Поиск информации о сотрудниках по Гомельскому отделению Белорусской железной дороги
+        </div>
+        <br>
+        <div style="padding-left: 20px; ">
+
+            Фамилия или имя: <input type="text" name="firstname" id="firstname"
+                                    onKeyPress="if (event.keyCode==13) poisk() ">
+            <br><br>
+            Предприятие: <select id="pred" onchange="filtrpred()">
+            <option value="">Все предприятия</option>
+            <option th:each="company : ${companies}" th:value="${company.getName} " th:text="${company.getName} + ' ('+${company.getNumberOfEmployees}+')'">
+            </option>
+        </select>
+            <br><br>
+            Подразделение: <select id="division" onchange="filtrpost()">
+            <option value="">Все подразделения</option>
+        </select>
+            <br><br>
+            Должность: <select id="post">
+            <option value="">Все должности</option>
+        </select>
+            <br><br>
+            <input type="button" name="button" id="button" value="Поиск" onClick="poisk();">
+            <br><br>
+        </div>
+        <div style="padding-left: 20px;">
+            <div id="result_div_id">
+                <div id="SlideMenu1" style="height:auto;z-index:16;width:auto;">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:replace="footer :: content"></div>
+</body>
+<script type="text/javascript" src="../js/jquery-ui-1.11.4.custom/jquery.js"></script>
+<script src="../js/json3.min.js"></script>
+<script type="text/javascript" src="../js/jquery-ui-1.11.4.custom/jquery-ui.min.js"></script>
+<script type="text/javascript" src="../js/jquery.ui.datepicker-ru.js"></script>
+<link type="text/css" href="../js/jquery-ui-1.11.4.custom/jquery-ui.css" rel="Stylesheet"/>
+<script type="text/javascript" src="../script.js"></script>
+<style>
+    td {
+        font-family: Verdana, Geneva;
+        font-size: 8pt;
+        line-height: 1.3;
+    }
+
+    #datepicker, table.ui-datepicker-calendar thead tr th {
+        font-size: 8pt;
+    }
+</style>
+</html>

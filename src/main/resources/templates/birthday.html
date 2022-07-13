@@ -1,0 +1,38 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="content" style="text-align: left">
+    <div class="leftColumn">
+        <br><br>
+        <div style="text-align: left">
+            <font size="4">
+                <a class="none" href="/"> - Поиск информации о сотрудниках по Гомельскому отделению Белорусской
+                    железной
+                    дороги</a>
+                <br>
+
+                <a class="none" href="/former/"> - Поиск информации о бывших сотрудниках по Гомельскому отделению
+                    Белорусской железной дороги</a>
+            </font>
+        </div>
+
+        <br><br>
+        <div style="text-align: center">
+            <img th:src="@{/images/logo_bzhd_min.png}">
+        </div>
+        <br>
+        <br>
+        <div id="datepicker" style="text-align: center">
+        </div>
+        <br>
+        <div style="text-align: center">
+            C Днем Рождения!
+        </div>
+        <br>
+        <div id="birthday" style="text-align: center">
+        </div>
+        <br>
+        <br>
+    </div>
+</div>
+</body>
+</html>

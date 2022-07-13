@@ -1,0 +1,240 @@
+@charset "utf-8";
+* {margin: 0; padding: 0;} /* обнуляем отступы */
+body {
+background: #fff;
+}
+html,body {
+height: 100%; /* задаем высоту тела документа */
+background: #FFFFFF;
+max-width: 1280px; 
+margin:0 auto;
+}
+   p {
+    text-indent: 40px; /* Отступ первой строки в пикселах */
+    margin-top: 0.5em; /* Отступ сверху */
+    margin-bottom: 1em; /* Отступ снизу */
+   }
+.main { /* основной блок, который должен растянуться до подвала */
+min-height: 70%; /* задаем минимальную высоту основного блока */
+width: 100%;
+overflow: hidden; 
+
+
+}
+* html .main { /* хак для ie6 */
+height: 70%; /* для ие6, т.к. не понимает min-height */
+width: 100%;
+overflow: hidden; 
+
+}
+.header{
+height: 180px; 
+color:black; 
+    background: #EECBAD;
+    background: -moz-linear-gradient(top, #E8E8E8 0%, #EECBAD 100%);
+    background: -webkit-linear-gradient(top, #E8E8E8 0%,#EECBAD 100%);
+    background: -o-linear-gradient(top, #E8E8E8 0%,#EECBAD 100%);
+    background: linear-gradient(top, #E8E8E8 0%,#EECBAD 100%);
+
+	background: -webkit-gradient(top, #E8E8E8 0%,#EECBAD 100%);
+    background: -ms-linear-gradient(top, #E8E8E8 0%,#EECBAD 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#E8E8E8', 
+            endColorstr='#EECBAD',GradientType=0);
+
+font-family:   Verdana, Arial, Helvetica,  sans-serif;
+}
+
+.leftColumn {
+width: 30%;
+float: left;
+padding-bottom: 20000px;
+margin-bottom: -20000px;
+padding-left: 25px;
+
+}
+.centrColumn {
+
+width: 60%;
+float: left;
+padding-bottom: 20000px;
+margin-bottom: -20000px;
+padding-top: 20px;
+
+background: #E8E8E8;
+line-height: 25px;
+
+}
+.hFooter { /* это распорка в основном блоке - резервируем место для подвала */
+height: 60px; /* высота нашего подвала */
+width: 100%;
+}
+.footer { /* подвал */
+background: #0000CC; /* цвет фона подвала (для наглядности) */
+color: #fff;
+height: 60px; /* высота подвала */
+margin-top: -60px; /* делаем отрицательный отступ по высоте равный высоте подвла, чтобы четко вписаться в размер экрана */
+width: 100%;
+background: #1C1C1C;
+
+
+}
+a.none{
+	text-decoration:inherit;
+	color:blue;
+}
+a.none:hover{
+	text-decoration:none;
+	color:#2D3E8E;
+}
+
+.leftColumnName {
+width: 95%;
+font-size: 20pt;
+font-family:   Verdana, Arial, Helvetica,  sans-serif;
+color:green;
+    background: #EECBAD;
+    background: -moz-linear-gradient(top, #EECBAD 0%, #E8E8E8 100%);
+    background: -webkit-linear-gradient(top, #EECBAD 0%,#E8E8E8 100%);
+    background: -o-linear-gradient(top, #EECBAD 0%,#E8E8E8 100%);
+    background: linear-gradient(top, #EECBAD 0%,#E8E8E8 100%);
+
+	background: -webkit-gradient(top, #EECBAD 0%,#E8E8E8 100%);
+    background: -ms-linear-gradient(top, #EECBAD 0%,#E8E8E8 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#EECBAD', 
+            endColorstr='#E8E8E8',GradientType=0);
+	
+	
+    padding: 10px;
+}
+.TitleName {
+width: 100%;
+height: 50px;
+}
+   a {
+    color: #000080; /* Цвет обычной ссылки */
+    padding: 2px; /* Поля вокруг текста */
+   }
+   a:hover {
+    text-decoration: none; /* Убираем подчеркивание */
+    color: red; /* Цвет ссылки при наведении на нее курсора мыши */  
+     /* Цвет фона */
+   }
+.pp{
+height: 20px;	
+}
+
+
+#SlideMenu1 ul
+{
+   list-style: none;
+   margin: 0;
+   padding: 0;
+   font-size: 16px;
+}
+#SlideMenu1 li
+{
+   cursor: pointer;
+}
+#SlideMenu1 li div
+{
+   margin: 0px 0px 0px 0px;
+   padding: 2px 2px 2px 5px;
+   background-color: #EECBAD;
+   border-style: solid;
+   border-width: 1px;
+   border-color: #BBCEE6;
+   position: relative;
+   left: 0;
+   top: 0;
+
+}
+#SlideMenu1 li div:hover
+{
+   background-color: #EDF5FD;
+   border-style: solid;
+   border-width: 1px;
+   border-color: #EDF5FD;
+}
+#SlideMenu1 li a
+{
+   color: #000000;
+   font-weight: bold;
+   text-decoration: none;
+}
+#SlideMenu1 li a:hover
+{
+   color: #000000;
+   font-weight: bold;
+   text-decoration: none;
+}
+#SlideMenu1 li li
+{
+   cursor: auto;
+   padding: 2px 2px 2px 5px;
+   margin: 1px 0px 1px 0px;
+   background-color: #EDF2F8;
+   border-style: solid;
+   border-width: 1px;
+   border-color: #EDF5FD;
+}
+#SlideMenu1 li li a
+{
+   color: #000000;
+   font-weight: normal;
+   text-decoration: none;
+}
+#SlideMenu1 li li:hover
+{
+   background-color: #EDF5FD;
+   border-style: solid;
+   border-width: 1px;
+   border-color: #EDF2F8;
+}
+#SlideMenu1 li li a:hover
+{
+   color: #000000;
+   font-weight: normal;
+   text-decoration: none;
+}
+.thumbnails
+{
+margin: -3em 0 0 -2em; /* Компенсируем отступы между float-блоками, чтобы они занимали все доступное пространство */
+text-align: center; /* Выравнивание по центру */
+}
+
+.thumbnail
+{
+text-decoration: none; /* Убираем подчеркивание у элемента ins, который был использован для совместимости со старыми версиями Internet Explorer */
+display: -moz-inline-box; /* Следующее правило для Firefox 2 */
+display: inline-block; /* а это для остальных */
+vertical-align: top;
+// text-align: left; /* Убираем выравнивание по центру */
+margin: 3em 0 0 2em; /* Отступы между блоками */
+
+}
+
+.thumbnail .r
+{
+/* Если есть необходимость, то свойства padding, border, background и position со значением relative
+лучше задавать у этого элемента -- это несколько расширит количество поддерживаемых версий браузеров */
+
+width: 10em; /* Задаем минимальную ширину по тексту */
+float: left; /* Минимальная ширина в пикселях будет автоматически рассчитываться по ширине картинки */
+// text-align: center;
+}
+
+.arr {
+  color: #808080;
+  font: 13px Arial,Helvetica;
+}
+a.panel{
+   text-decoration: none; /* Убираем подчеркивание */
+}
+a.panel:hover{
+    text-decoration:underline;
+	color:#000099;
+
+}
+a img {
+    border: none; /* Убираем рамку */
+}
