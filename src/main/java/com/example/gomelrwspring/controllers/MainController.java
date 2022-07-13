@@ -1,9 +1,6 @@
 package com.example.gomelrwspring.controllers;
 
-import com.example.gomelrwspring.DAO.CompanyDAO;
-import com.example.gomelrwspring.DAO.DivisionDAO;
-import com.example.gomelrwspring.DAO.EmployeeDAO;
-import com.example.gomelrwspring.DAO.PostDAO;
+import com.example.gomelrwspring.DAO.*;
 import com.example.gomelrwspring.models.Division;
 import com.example.gomelrwspring.models.Employee;
 import com.example.gomelrwspring.models.Post;
@@ -17,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Controller
@@ -26,13 +24,15 @@ public class MainController {
     private final DivisionDAO divisionDAO;
     private final PostDAO postDAO;
     private final EmployeeDAO employeeDAO;
+    private final PhoneNumberDAO phoneNumberDAO;
 
     @Autowired
-    public MainController(CompanyDAO companyDAO, DivisionDAO divisionDAO, PostDAO postDAO, EmployeeDAO employeeDAO) {
+    public MainController(CompanyDAO companyDAO, DivisionDAO divisionDAO, PostDAO postDAO, EmployeeDAO employeeDAO, PhoneNumberDAO phoneNumberDAO) {
         this.companyDAO = companyDAO;
         this.divisionDAO = divisionDAO;
         this.postDAO = postDAO;
         this.employeeDAO = employeeDAO;
+        this.phoneNumberDAO = phoneNumberDAO;
     }
 
     @GetMapping
@@ -60,5 +60,12 @@ public class MainController {
                                                       @RequestParam("namepost") String namePost) {
         List<Employee> employees = employeeDAO.getListOfEmployee(name, nameCompany, nameDivision, namePost);
         return new ResponseEntity<>(employees, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/addtel", method = RequestMethod.POST)
+    public ResponseEntity addPhoneNumber(@RequestParam("work_tel") String phoneNumber, @RequestParam("id") int id, HttpServletRequest request) {
+        phoneNumberDAO.savePhoneNumber(phoneNumber, id);
+        phoneNumberDAO.saveAuthorIP(phoneNumber, id, request.getRemoteAddr());
+        return new ResponseEntity(HttpStatus.OK);
     }
 }

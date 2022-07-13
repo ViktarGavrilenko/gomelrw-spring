@@ -239,14 +239,12 @@ function update(count) {
         var id = document.getElementById("iduser" + count).value;
 
         $.ajax({
-            type: 'POST',  ///тип запроса  GET либо POST
-            url: "../teladdbase.php", //ваш контроллер или отдельный аякс контроллер
+            type: 'POST',
+            url: "addtel",
             data: {id: id, work_tel: work_tel},
-            success: function (data) {   ///если ajax-запрос прошел удачно и сервер вернул код 200
-                var stroka = data;
-                alert("Добавлен номер телефона: " + data);
-                document.getElementById('polevvoda' + count).innerHTML = data + '   <input type="button" onclick="addpolevvoda(' + count + ', \'' + data + '\')" value=" Изменить номер "/>';
-
+            success: function () {
+                alert("Добавлен номер телефона: " + work_tel);
+                document.getElementById('polevvoda' + count).innerHTML = work_tel + '   <input type="button" onclick="addpolevvoda(' + count + ', \'' + work_tel + '\')" value=" Изменить номер "/>';
             }
         });
     } else {
