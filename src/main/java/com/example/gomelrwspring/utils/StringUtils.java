@@ -5,6 +5,7 @@ import java.time.format.DateTimeFormatter;
 
 public class StringUtils {
     private static final String DATE_PATTERN_FOR_SQL = "yyyy-MM-dd";
+    private static final String DATE_PATTERN_MONTH_DAY = "MM-dd";
     private static final String DATE_PATTERN_FOR_MEN = "d MMMM yyyy";
     private static final String DATE_PATTERN_FOR_WOMEN = "d MMMM";
     private static final String FLAG_MEN = "М";
@@ -16,5 +17,9 @@ public class StringUtils {
         } else {
             return LocalDate.parse(date, formatter).format(DateTimeFormatter.ofPattern(DATE_PATTERN_FOR_WOMEN));
         }
+    }
+
+    public static String getDateNowHowMonthAndDay() {
+        return LocalDate.now().format(DateTimeFormatter.ofPattern(DATE_PATTERN_MONTH_DAY));
     }
 }

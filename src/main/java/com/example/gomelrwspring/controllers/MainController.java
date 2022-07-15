@@ -3,6 +3,7 @@ package com.example.gomelrwspring.controllers;
 import com.example.gomelrwspring.DAO.*;
 import com.example.gomelrwspring.models.Division;
 import com.example.gomelrwspring.models.Employee;
+import com.example.gomelrwspring.models.OldPlaceOfWork;
 import com.example.gomelrwspring.models.Post;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,14 +26,16 @@ public class MainController {
     private final PostDAO postDAO;
     private final EmployeeDAO employeeDAO;
     private final PhoneNumberDAO phoneNumberDAO;
+    private final OldPlaceOfWorkDAO oldPlaceOfWorkDAO;
 
     @Autowired
-    public MainController(CompanyDAO companyDAO, DivisionDAO divisionDAO, PostDAO postDAO, EmployeeDAO employeeDAO, PhoneNumberDAO phoneNumberDAO) {
+    public MainController(CompanyDAO companyDAO, DivisionDAO divisionDAO, PostDAO postDAO, EmployeeDAO employeeDAO, PhoneNumberDAO phoneNumberDAO, OldPlaceOfWorkDAO oldPlaceOfWorkDAO) {
         this.companyDAO = companyDAO;
         this.divisionDAO = divisionDAO;
         this.postDAO = postDAO;
         this.employeeDAO = employeeDAO;
         this.phoneNumberDAO = phoneNumberDAO;
+        this.oldPlaceOfWorkDAO = oldPlaceOfWorkDAO;
     }
 
     @GetMapping
@@ -54,11 +57,18 @@ public class MainController {
     }
 
     @RequestMapping(value = "/search", method = RequestMethod.POST)
-    public ResponseEntity<List<Employee>> getEmployee(@RequestParam("firstname") String name,
-                                                      @RequestParam("namepred") String nameCompany,
-                                                      @RequestParam("divisionname") String nameDivision,
-                                                      @RequestParam("namepost") String namePost) {
-        List<Employee> employees = employeeDAO.getListOfEmployee(name, nameCompany, nameDivision, namePost);
+    public ResponseEntity<List<Employee>> getEmployee(@RequestParam(name = "firstname", required = false) String name,
+                                                      @RequestParam(name = "namepred", required = false) String nameCompany,
+                                                      @RequestParam(name = "divisionname", required = false) String nameDivision,
+                                                      @RequestParam(name = "namepost", required = false) String namePost,
+                                                      @RequestParam(name = "datebd", required = false, defaultValue = "") String dateOfBirth,
+                                                      @RequestParam(name = "id", required = false, defaultValue = "-1") int id) {
+        List<Employee> employees;
+        if (id == -1) {
+            employees = employeeDAO.getListOfEmployee(name, nameCompany, nameDivision, namePost, dateOfBirth);
+        } else {
+            employees = employeeDAO.getPersonWithBirthdays(id);
+        }
         return new ResponseEntity<>(employees, HttpStatus.OK);
     }
 
@@ -67,5 +77,17 @@ public class MainController {
         phoneNumberDAO.savePhoneNumber(phoneNumber, id);
         phoneNumberDAO.saveAuthorIP(phoneNumber, id, request.getRemoteAddr());
         return new ResponseEntity(HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/oldPlaceOfWork", method = RequestMethod.POST)
+    public ResponseEntity<List<OldPlaceOfWork>> addPhoneNumber(@RequestParam("id") int id) {
+        List<OldPlaceOfWork> oldPlaceOfWorks = oldPlaceOfWorkDAO.getOldPlaceOfWork(id);
+        return new ResponseEntity<>(oldPlaceOfWorks, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/birthday", method = RequestMethod.POST)
+    public ResponseEntity<List<Employee>> getListOfBirthdays() {
+        List<Employee> employees = employeeDAO.getListOfBirthdays();
+        return new ResponseEntity<>(employees, HttpStatus.OK);
     }
 }

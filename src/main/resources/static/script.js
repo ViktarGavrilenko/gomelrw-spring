@@ -58,7 +58,7 @@ $(function () {
             var namepost = document.getElementById("post").value;
             $.ajax({
                 type: 'POST',
-                url: "../search.php",
+                url: "search",
                 data: {
                     firstname: vvod,
                     datebd: dateText,
@@ -75,42 +75,23 @@ $(function () {
 
 // Отображает именнинников на странице
     $.ajax({
-        url: "../birthday.php",
-        success: function (data) {
-            var stroka = data;
-            stroka = stroka.replace("[", "");
-            stroka = stroka.replace("]", "");
+        url: "birthday",
+        type: 'POST',
+        dataType: 'json',
+        success: function (result) {
             var itog = '<ul>';
             var count = 1;
-            while (stroka.indexOf('}') !== -1) {
-                var position = stroka.indexOf('}');
-                var result = stroka.substring(0, position + 1);
-                stroka = stroka.substring(position + 2);
-                var event = JSON.parse(result);
-                if (event.sex === "Ж") {
-                    var avatar = "../images/women.png";
-                } else {
-                    var avatar = "../images/men.png";
-                }
-                if (event.wt !== null) {
-                    var numtel = event.wt;
-                } else {
-                    var numtel = "Нет в базе";
-                }
-
-                var np = event.np;		//Название предприятия
-
-                if (np_old !== event.np) {	//Если название предприятия предыдущего сотрудника не совпадает с эти названием, то добавляем это название в список
-                    itog = itog + '<div style="font-weight: bold;">' + np + '</div><div><input type="hidden" name="id" id="iduserbd' + count + '" value="' + event.id + '"><a id="' + count + '"   onClick="birthdayview(this)">' + event.f + ' ' + event.n + ' ' + event.mn + '</a></div>';
-
+            for (var n in result) {
+                var np = result[n].companyName;		//Название предприятия
+                if (np_old !== result[n].companyName) {	//Если название предприятия предыдущего сотрудника не совпадает с эти названием, то добавляем это название в список
+                    itog = itog + '<div style="font-weight: bold;">' + np + '</div><div><input type="hidden" name="id" id="iduserbd' + count + '" value="' + result[n].id + '"><a id="' + count + '"   onClick="birthdayview(this)">' + result[n].firstName + ' ' + result[n].name + ' ' + result[n].middleName + '</a></div>';
                 } else { //Ели не совпадает, то не добавляем
-                    itog = itog + '<div><input type="hidden" name="id" id="iduserbd' + count + '" value="' + event.id + '"><a id="' + count + '"   onClick="birthdayview(this)">' + event.f + ' ' + event.n + ' ' + event.mn + '</a></div>';
+                    itog = itog + '<div><input type="hidden" name="id" id="iduserbd' + count + '" value="' + result[n].id + '"><a id="' + count + '"   onClick="birthdayview(this)">' + result[n].firstName + ' ' + result[n].name + ' ' + result[n].middleName + '</a></div>';
                 }
-                var np_old = np;
+                var np_old = result[n].companyName;
                 count = count + 1;
             }
             document.getElementById('birthday').innerHTML = itog + '</ul>';
-
         }
     });
 });
@@ -222,8 +203,8 @@ function birthdayview(obj) {
 
     $.ajax({
         type: 'POST',  ///тип запроса  GET либо POST
-        url: "../search.php", //ваш контроллер или отдельный аякс контроллер
-        data: {id: id, todaybd: 1},
+        url: "search", //ваш контроллер или отдельный аякс контроллер
+        data: {id: id},
         success: function (data) {
             viewresult(data);
         }
@@ -233,11 +214,8 @@ function birthdayview(obj) {
 // Функция добавления номера телефона в базу
 function update(count) {
     var work_tel = document.getElementById("work_tel" + count).value.trim();
-
-
     if (work_tel.length > 0 && work_tel.indexOf('\'') === -1 && work_tel.indexOf('\"') === -1) {
         var id = document.getElementById("iduser" + count).value;
-
         $.ajax({
             type: 'POST',
             url: "addtel",
@@ -257,38 +235,17 @@ function oldplacework(count) {
     var id = document.getElementById('iduser' + count).value;
     $.ajax({
         type: 'POST',
-        url: "search_post.php",
+        dataType: 'json',
+        url: "oldPlaceOfWork",
         data: {id: id},
-        success: function (data) {
-            viewresultoldwork(data, count);
+        success: function (result) {
+            var itog = '<table style="position:relative; padding-left: 25px; border-top: 1px solid #000; border-bottom: 1px solid #000; "><tr style="width:250px;"><td style="width:250px;">Предыдущее место работы:</td></tr><tr><td style="width:150px;border-bottom: 1px solid #000;">Предприятие:</td><td style="width:150px;border-bottom: 1px solid #000;">Подразделение:</td><td style="width:150px;border-bottom: 1px solid #000;">Должность:</td><td style="width:150px;border-bottom: 1px solid #000;">номер телефона:</td></tr>';
+            for (var n in result) {
+                newline = '<tr><td style="width:150px">' + result[n].companyName + '</td><td style="width:150px">' + result[n].divisionName + '</td><td style="width:150px">' + result[n].postName + '</td><td style="width:150px">' + result[n].phoneNumber + '</td></tr>';
+                itog = itog + '' + newline;
+            }
+            document.getElementById('oldplacework' + count).innerHTML = itog + '</table>';
+            document.getElementById('buttonoldplacework' + count).innerHTML = '';
         }
     });
 }
-
-// Функция выводы предыдущих мест работы
-function viewresultoldwork(data, count) {
-    var stroka = data;
-    stroka = stroka.replace("[", "");
-    stroka = stroka.replace("]", "");
-    var itog = '<table style="position:relative; padding-left: 25px; border-top: 1px solid #000; border-bottom: 1px solid #000; "><tr style="width:250px;"><td style="width:250px;">Предыдущее место работы:</td></tr><tr><td style="width:150px;border-bottom: 1px solid #000;">Предприятие:</td><td style="width:150px;border-bottom: 1px solid #000;">Подразделение:</td><td style="width:150px;border-bottom: 1px solid #000;">Должность:</td><td style="width:150px;border-bottom: 1px solid #000;">номер телефона:</td></tr>';
-    while (stroka.indexOf('}') !== -1) {
-        var position = stroka.indexOf('}');
-        var result = stroka.substring(0, position + 1);
-        stroka = stroka.substring(position + 2);
-        var event = JSON.parse(result);
-        namepred = event.namepred;
-        divisionname = event.divisionname;
-        namepost = event.namepost;
-        work_tel = event.work_tel;
-        /*
-                    <table style="position:relative; padding-left: 25px"><tr><td style="width:150px">День рождения:</td><td>'+event.br+'</td></tr><tr><td style="width:150px">Предприятие:</td><td>'+event.np+'</td></tr><tr><td style="width:150px">Подразделение:</td><td>'+event.dn+'</td></tr><tr><td style="width:150px">Должность:</td><td>'+event.npost+'</td></tr><tr><td style="width:150px">Табельный номер:</td><td>'+event.tn+'</td></tr><tr><td style="width:150px">Номер телефона:</td><td><font size="4" color="red" >'+numtel+'</font>  </td></tr></table>
-            */
-        newline = '<tr><td style="width:150px">' + namepred + '</td><td style="width:150px">' + divisionname + '</td><td style="width:150px">' + namepost + '</td><td style="width:150px">' + work_tel + '</td></tr>';
-
-        itog = itog + '' + newline;
-        //itog = itog+' '+namepred+' | '+divisionname+' | '+namepost+' | номер телефона: '+work_tel+' <br>';
-    }
-    document.getElementById('oldplacework' + count).innerHTML = itog + '</table>';
-    document.getElementById('buttonoldplacework' + count).innerHTML = '';
-}
-

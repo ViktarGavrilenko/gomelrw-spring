@@ -20,5 +20,4 @@ public class PhoneNumberDAO {
     public void saveAuthorIP(String phoneNumber, int id, String ip) {
         jdbcTemplate.update("INSERT INTO telupdate (id_data, tel, ip ) VALUES (?,?,?)", id, phoneNumber, ip);
     }
-
 }
