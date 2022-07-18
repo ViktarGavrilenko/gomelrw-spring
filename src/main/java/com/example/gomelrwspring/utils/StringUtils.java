@@ -22,4 +22,8 @@ public class StringUtils {
     public static String getDateNowHowMonthAndDay() {
         return LocalDate.now().format(DateTimeFormatter.ofPattern(DATE_PATTERN_MONTH_DAY));
     }
+
+    public static String[] getFirstNameAndName(String str) {
+        return str.trim().replaceAll(" +", " ").split(" ");
+    }
 }

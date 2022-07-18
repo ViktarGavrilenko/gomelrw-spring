@@ -18,7 +18,7 @@ public class CompanyDAO {
     }
 
     public List<Company> getListOfCompany() {
-        String SQL = "SELECT pred.id, namepred as name, count(namepred) as numberOfEmployees FROM data_gomelrw dg, " +
+        String SQL = "SELECT pred.id, namepred, count(namepred) as numberOfEmployees FROM data_gomelrw dg, " +
                 "pred where dg.id_pred=pred.id group by namepred order by namepred";
         return jdbcTemplate.query(SQL, new BeanPropertyRowMapper<>(Company.class));
     }

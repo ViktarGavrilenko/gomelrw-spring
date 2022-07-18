@@ -29,7 +29,8 @@ public class MainController {
     private final OldPlaceOfWorkDAO oldPlaceOfWorkDAO;
 
     @Autowired
-    public MainController(CompanyDAO companyDAO, DivisionDAO divisionDAO, PostDAO postDAO, EmployeeDAO employeeDAO, PhoneNumberDAO phoneNumberDAO, OldPlaceOfWorkDAO oldPlaceOfWorkDAO) {
+    public MainController(CompanyDAO companyDAO, DivisionDAO divisionDAO, PostDAO postDAO, EmployeeDAO employeeDAO,
+                          PhoneNumberDAO phoneNumberDAO, OldPlaceOfWorkDAO oldPlaceOfWorkDAO) {
         this.companyDAO = companyDAO;
         this.divisionDAO = divisionDAO;
         this.postDAO = postDAO;
@@ -44,6 +45,12 @@ public class MainController {
         return "main";
     }
 
+    @GetMapping("/former")
+    public String showPageWithFormerEmployees(Model model) {
+        model.addAttribute("companies", companyDAO.getListOfCompany());
+        return "main";
+    }
+
     @RequestMapping(value = "/division", method = RequestMethod.POST)
     public ResponseEntity<List<Division>> getDivisions(@RequestParam("namepred") String nameCompany) {
         List<Division> divisions = divisionDAO.getListOfDivision(nameCompany);
@@ -51,7 +58,8 @@ public class MainController {
     }
 
     @RequestMapping(value = "/post", method = RequestMethod.POST)
-    public ResponseEntity<List<Post>> getPosts(@RequestParam("namepred") String nameCompany, @RequestParam("divisionname") String nameDivision) {
+    public ResponseEntity<List<Post>> getPosts(@RequestParam("namepred") String nameCompany,
+                                               @RequestParam("divisionname") String nameDivision) {
         List<Post> posts = postDAO.getListOfPost(nameCompany, nameDivision);
         return new ResponseEntity<>(posts, HttpStatus.OK);
     }
@@ -73,7 +81,8 @@ public class MainController {
     }
 
     @RequestMapping(value = "/addtel", method = RequestMethod.POST)
-    public ResponseEntity addPhoneNumber(@RequestParam("work_tel") String phoneNumber, @RequestParam("id") int id, HttpServletRequest request) {
+    public ResponseEntity addPhoneNumber(@RequestParam("work_tel") String phoneNumber,
+                                         @RequestParam("id") int id, HttpServletRequest request) {
         phoneNumberDAO.savePhoneNumber(phoneNumber, id);
         phoneNumberDAO.saveAuthorIP(phoneNumber, id, request.getRemoteAddr());
         return new ResponseEntity(HttpStatus.OK);

@@ -9,8 +9,7 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.example.gomelrwspring.utils.StringUtils.convertDateForEmployee;
-import static com.example.gomelrwspring.utils.StringUtils.getDateNowHowMonthAndDay;
+import static com.example.gomelrwspring.utils.StringUtils.*;
 
 @Component
 public class EmployeeDAO {
@@ -29,19 +28,19 @@ public class EmployeeDAO {
                 "sex, namepost as postName, divisionname as divisionName, tabnum as tabNum, namepred as companyName, " +
                 "work_tel as workPhoneNumber, e_mail as email, dg.datasaveinbase FROM people p, data_gomelrw dg, " +
                 "post, division d, tabnum, pred where dg.id_people=p.id and dg.id_post=post.id and dg.id_division=d.id " +
-                "and dg.id_pred=pred.id and dg.id_tabnum=tabnum.id %s %s %s %s and (firstname like ? or name like ?) " +
-                "order by firstname, `name`;";
+                "and dg.id_pred=pred.id and dg.id_tabnum=tabnum.id %s %s %s %s and (firstname like ? %s name like ?) " +
+                "order by firstname, name;";
 
         String fieldCompany = "";
         String fieldDivision = "";
         String fieldPost = "";
         String fieldBirth = "";
+        String orOrAnd = "or";
 
         if (!dateOfBirth.equals("")) {
             fieldBirth = "and ? = DATE_FORMAT(`dt_birthday`, '%m-%d') ";
             args.add(dateOfBirth);
         }
-
         if (!companyName.equals("")) {
             fieldCompany = "and namepred = ? ";
             args.add(companyName);
@@ -54,10 +53,17 @@ public class EmployeeDAO {
             fieldPost = "and namepost = ? ";
             args.add(postName);
         }
-        args.add("%" + name + "%");
-        args.add("%" + name + "%");
+        String[] firstnameAndName = getFirstNameAndName(name);
+        if (firstnameAndName.length < 2) {
+            args.add("%" + name + "%");
+            args.add("%" + name + "%");
+        } else {
+            args.add("%" + firstnameAndName[0] + "%");
+            args.add("%" + firstnameAndName[1] + "%");
+            orOrAnd = "and";
+        }
 
-        SQL = String.format(SQL, fieldBirth, fieldCompany, fieldDivision, fieldPost);
+        SQL = String.format(SQL, fieldBirth, fieldCompany, fieldDivision, fieldPost, orOrAnd);
         List<Employee> employeeList = jdbcTemplate.query(SQL, new BeanPropertyRowMapper<>(Employee.class), args.toArray());
 
         for (Employee employee : employeeList) {
